@@ -28,7 +28,7 @@ const redisClient = redis.createClient(config.redis.options);
 redisClient.on('ready', () => {
   log.info('Successfully connected to Redis.')
 });
-
+// add redis to config
 config.redis.client = redisClient;
 
 /* Logic to start the application */

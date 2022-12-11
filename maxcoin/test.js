@@ -53,17 +53,17 @@ MongoClient.connect(dsn, (err, client) => {
 
 
 function insertRedis (client, data, cb) {
-    const values = ['values'];
+    const values = ['values'];  // 'values'对应redis里的表名称
 
     Object.keys(data).forEach((key) => {
         values.push(data[key]);
         values.push(key);
     });
-
+    // values是三个元素的数组，对应 tablename('values'), value, key
     client.zadd(values, cb);
 }
 
-
+// 建立 redis Client
 const redisClient = redis.createClient(7379);
 redisClient.on('connect', () => {
     console.time('redis');
@@ -75,7 +75,7 @@ redisClient.on('connect', () => {
         insertRedis(redisClient, data.bpi, (err, results) => {
             if(err) throw err;
             console.log(`Successfully inserted ${results} key/value pairs into redis`);
-
+             // 由低到高排序， lowest on top  -1 -1 代表最高的value 和key
             redisClient.zrange('values', -1, -1, 'withscores', (err, result) => {
                 if(err) throw err;
 

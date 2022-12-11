@@ -19,6 +19,8 @@ module.exports = (config) => {
   app.use(bodyParser.urlencoded({ extended: false }));
 
   app.set('trust proxy', 1); // trust first proxy
+  
+  // use redis to store session
   app.use(session({
     store: new RedisStore({
       client: config.redis.client
